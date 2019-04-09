@@ -10,7 +10,7 @@ pipeline {
         
         stage('Build') {
             environment {
-                JOB_PATH = 'jenkins/jobs/develop_build_job'
+                JOB_PATH = 'jenkins/jobs/develop_build_job/'
                 MAVEN_SETTINGS = 'mvn-settings.xml'
             }    
 
@@ -21,12 +21,10 @@ pipeline {
                 }
             }    
             steps{
-                dir(JOB_PATH){
-                    sh 'pwd'
-                    echo 'Starting Build stage...'
-                    echo 'Compiling, testing and building...'
-                    sh 'mvn --settings ${MAVEN_SETTINGS} clean install'
-                }
+                sh 'pwd'
+                echo 'Starting Build stage...'
+                echo 'Compiling, testing and building...'
+                sh 'mvn --settings ${JOB_PATH}${MAVEN_SETTINGS} clean install'
             }     
 
         }
