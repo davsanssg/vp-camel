@@ -1,35 +1,43 @@
 pipeline {
     agent any
-      
+  
     stages {
-        
         stage('Preparation') {
-            environment { 
-                REPO_BRANCH = 'develop'
-                REPO_URL = 'https://github.com/skltp-incubator/vp-camel.git'
-            }
             steps {
-                echo 'Cleaning workspace..'
-                cleanWs()
-                
-                echo 'Cloning repository...'
-                git branch: REPO_BRANCH, url: REPO_URL
+                echo 'Doing nothing in preparation..'
             }
         }
         
         stage('Build') {
+            agent {
+                docker {
+                    image 'maven:3.6.0-jdk-8-alpine'
+                    reuseNode true
+                }
+            }    
             steps{
+                sh 'pwd'
+                echo 'Starting Build stage...'
                 echo 'Compiling, testing and building...'
-                sh label: '', script: 'mvn clean package'   
-            }
+                sh 'mvn clean install'
+            }     
+
         }
         
         stage('Results'){
             steps{
+                echo 'Starting Results stage...'
                 junit '**/target/surefire-reports/TEST-*.xml'
                 archiveArtifacts '**/target/*.jar'    
             }
         }
         
+    }
+
+    post { 
+        always {
+            echo 'Cleaning workspace...'
+            cleanWs()
+        }
     }
 }
