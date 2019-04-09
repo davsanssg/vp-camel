@@ -10,7 +10,7 @@ pipeline {
         
         stage('Build') {
             environment {
-                JOB_PATH 'jenkins/jobs/develop_build_job'
+                JOB_PATH = 'jenkins/jobs/develop_build_job'
                 MAVEN_SETTINGS = 'mvn-settings.xml'
             }    
 
