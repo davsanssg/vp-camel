@@ -17,7 +17,6 @@ pipeline {
             agent {
                 docker {
                     image 'maven:3.6.0-jdk-8-alpine'
-                    args '-p 8086:8086'
                     reuseNode true
                 }
             }    
