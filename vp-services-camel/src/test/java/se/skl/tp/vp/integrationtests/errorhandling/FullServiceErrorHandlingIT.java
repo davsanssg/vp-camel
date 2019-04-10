@@ -55,9 +55,7 @@ public class FullServiceErrorHandlingIT {
 //    System.setProperty( "com.sun.xml.bind.v2.bytecode.ClassTailor.noOptimize", "true");
 
     //TODO Use dynamic ports and also set TAK address used by takcache (Override "takcache.endpoint.address" property)
-    String url = "http://localhost:8087/tak-services/SokVagvalsInfo/v2";
-    takMockWebService = new TakMockWebService(url);
-    System.out.println(url);
+    takMockWebService = new TakMockWebService("http://localhost:8086/tak-services/SokVagvalsInfo/v2");
     takMockWebService.start();
 
 //    System.setProperty("takcache.endpoint.address", String.format("http://localhost:%d/tak-services/SokVagvalsInfo/v2", DYNAMIC_PORT));
