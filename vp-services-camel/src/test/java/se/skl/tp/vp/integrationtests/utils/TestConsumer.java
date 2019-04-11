@@ -21,11 +21,11 @@ public class TestConsumer {
   @Produce(uri = "direct:start")
   protected ProducerTemplate template;
 
-  @Autowired
-  Environment env;
+  private Environment env;
 
   @Autowired
-  public TestConsumer(CamelContext camelContext) throws Exception {
+  public TestConsumer(CamelContext camelContext, Environment env) throws Exception {
+    this.env = env;
     createConsumerRouteUrls();
     createConsumerRoutes(camelContext);
   }
