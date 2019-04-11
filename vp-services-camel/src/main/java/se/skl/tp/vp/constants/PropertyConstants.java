@@ -27,4 +27,7 @@ public class PropertyConstants {
     public static final String TIMEOUT_JSON_FILE_DEFAULT_TJANSTEKONTRAKT_NAME = "timeout.json.file.default.tjanstekontrakt.name";
     public static final String WSDL_JSON_FILE = "wsdl.json.file";
     public static final String WSDLFILES_DIRECTORY = "wsdlfiles.directory";
+
+    public static final String VP_HTTP_ROUTE_URL = "vp.http.route.url";
+    public static final String VP_HTTPS_ROUTE_URL = "vp.https.route.url";
 }
