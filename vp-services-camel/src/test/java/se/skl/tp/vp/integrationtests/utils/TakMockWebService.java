@@ -50,7 +50,11 @@ public class TakMockWebService {
     setVirtualiseringarResult(restoreFromLocalCache(url.getFile(), VirtuliseringCache.class));
   }
 
-  public void start() {
+  public void start()
+  {
+    if(endpoint != null && endpoint.isPublished()){
+        endpoint.stop();
+    }
     endpoint = Endpoint.publish(url, sokVagvalsInfo);
   }
 

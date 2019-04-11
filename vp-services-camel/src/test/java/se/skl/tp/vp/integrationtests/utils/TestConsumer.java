@@ -55,10 +55,6 @@ public class TestConsumer {
   }
 
   private void createConsumerRoutes(CamelContext camelContext) throws Exception {
-    if(camelContext.getStatus() == ServiceStatus.Started){
-      camelContext.stop();
-    }
-    camelContext.start();
     camelContext.addRoutes(new RouteBuilder() {
       @Override
       public void configure() throws Exception {
