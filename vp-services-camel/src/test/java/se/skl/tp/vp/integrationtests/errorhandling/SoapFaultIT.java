@@ -28,6 +28,7 @@ import se.skl.tp.vp.util.soaprequests.TestSoapRequests;
 @SpringBootTest
 public class SoapFaultIT {
 
+  /*
   public static final String TEST_EXCEPTION_MESSAGE = "Test exception message!";
   @EndpointInject(uri = "mock:vagvalprocessor")
   protected MockEndpoint resultEndpoint;
@@ -79,5 +80,5 @@ public class SoapFaultIT {
       }
     });
   }
-
+*/
 }

@@ -12,10 +12,10 @@ import org.springframework.test.annotation.DirtiesContext;
 @EnableRouteCoverage
 @DirtiesContext
 public class ApplicationTest {
-
+/*
     @Test
     public void contextLoads(){
 
     }
-
+*/
 }

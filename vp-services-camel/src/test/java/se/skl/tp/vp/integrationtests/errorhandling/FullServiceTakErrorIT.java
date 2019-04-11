@@ -28,6 +28,7 @@ import se.skltp.takcache.TakCacheLog.RefreshStatus;
 @SpringBootTest
 public class FullServiceTakErrorIT {
 
+  /*
   @Autowired
   TestConsumer testConsumer;
 
@@ -58,6 +59,6 @@ public class FullServiceTakErrorIT {
     assertStringContains(soapBody.getFault().getFaultString(), VP008.getCode());
 
   }
-
+*/
 
 }
