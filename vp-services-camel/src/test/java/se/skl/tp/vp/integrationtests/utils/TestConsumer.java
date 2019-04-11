@@ -1,6 +1,8 @@
 package se.skl.tp.vp.integrationtests.utils;
 
 import java.util.Map;
+import java.util.UUID;
+
 import org.apache.camel.CamelContext;
 import org.apache.camel.Produce;
 import org.apache.camel.ProducerTemplate;
@@ -23,7 +25,7 @@ public class TestConsumer {
 
   public String sendHttpRequestToVP(String message, Map<String, Object> headers){
     return template.requestBodyAndHeaders(
-        DIRECT_START_HTTP,
+        DIRECT_START_HTTP + UUID.randomUUID(),
         message,
         headers, String.class
     );
@@ -31,7 +33,7 @@ public class TestConsumer {
 
   public String sendHttpsRequestToVP(String message, Map<String, Object> headers){
     return template.requestBodyAndHeaders(
-        DIRECT_START_HTTPS,
+        DIRECT_START_HTTPS + UUID.randomUUID(),
         message,
         headers, String.class
     );

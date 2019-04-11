@@ -1,13 +1,7 @@
 pipeline {
     agent any
-    //Testing webhook 1
-    stages {
-        stage('Preparation') {
-            steps {
-                echo 'Doing nothing in preparation..'
-            }
-        }
-        
+
+    stages {       
         stage('Build') {
             environment {
                 JOB_PATH = 'jenkins/jobs/develop_build_job/'
