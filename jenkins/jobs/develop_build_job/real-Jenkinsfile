@@ -24,8 +24,7 @@ pipeline {
             steps{
                 echo 'Starting Results stage...'
                 junit '**/target/surefire-reports/TEST-*.xml'
-                archiveArtifacts '**/target/*.jar'
-                archiveArtifacts '**/target/*.zip'     
+                archiveArtifacts '**/target/*.jar' 
             }
         }
         
