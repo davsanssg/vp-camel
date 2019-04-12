@@ -22,13 +22,14 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import se.skl.tp.vp.integrationtests.utils.TestConsumer;
 import se.skl.tp.vp.util.soaprequests.SoapUtils;
 import se.skl.tp.vp.util.soaprequests.TestSoapRequests;
 
 @RunWith(CamelSpringBootRunner.class)
 @SpringBootTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
+@DirtiesContext(classMode = ClassMode.AFTER_CLASS)
 public class SoapFaultIT {
 
 
@@ -48,11 +49,6 @@ public class SoapFaultIT {
     replaceVagvalProcessor();
     makeMockVagvalProcessorThrowException();
     camelContext.start();
-  }
-
-  @After
-  public void after() throws Exception{
-    camelContext.stop();
   }
 
   @Test
