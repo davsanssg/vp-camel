@@ -8,11 +8,6 @@ node{
 pipeline {
     agent any
 
-    environment{
-        JDK_ = tool name: 'Java 8_152'
-        JAVA_HOME = "${JDK_}"
-    }
-
     stages {
         stage('Build') {
             agent {
