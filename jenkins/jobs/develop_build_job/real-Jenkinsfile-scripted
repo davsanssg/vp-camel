@@ -1,0 +1,23 @@
+node {
+   jdk = tool name: 'Java 8_152'
+   env.JAVA_HOME = "${jdk}"
+
+   catchError {
+      stage('Build') {
+        // Run the maven build inside docker container
+        configFileProvider([configFile(fileId: 'byggReleaseConfig', variable: 'MAVEN_SETTINGS')]) {
+          def maven = docker.image("maven:3.6.0-jdk-8-alpine")
+          maven.pull()
+          maven.inside("-v ${jdk}:${jdk}") {
+            sh 'mvn --global-settings ${MAVEN_SETTINGS} clean install'
+          }
+        }
+      }
+   } 
+   stage('Results') {
+      junit '**/target/surefire-reports/TEST-*.xml'
+      jacoco()
+      archive '**/target/*.jar'
+      cleanWs()
+   }
+}
