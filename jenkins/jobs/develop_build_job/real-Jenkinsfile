@@ -2,7 +2,13 @@ pipeline {
     agent any
 
     stages {
-
+        stage('Preparation') {
+            steps {
+                echo ${env.JAVA_HOME}
+                env.JAVA_HOME = tool name: 'Java 8_152'
+                echo ${env.JAVA_HOME}
+            }
+        }
         stage('Build') {
             agent {
                 docker {
@@ -10,7 +16,7 @@ pipeline {
                     reuseNode true
                 }
             }
-            steps{
+            steps {
                 echo 'Starting Build stage...'
                 configFileProvider([configFile(fileId: 'byggReleaseConfig', variable: 'MAVEN_SETTINGS')]) {
                     sh 'pwd'
@@ -18,20 +24,21 @@ pipeline {
                     sh 'mvn --global-settings ${MAVEN_SETTINGS} clean install'
                 }
             }     
-        }
-        
-        stage('Results'){
-            steps{
-                echo 'Starting Results stage...'
-                junit '**/target/surefire-reports/TEST-*.xml'
-                archiveArtifacts '**/target/*.jar' 
-            }
-        }
-        
+        }        
     }
 
-    post { 
+    post {
+
+        success {
+            echo 'Build succeeded'
+        }
+
         always {
+            echo 'Starting results handling...'
+            junit '**/target/surefire-reports/TEST-*.xml'
+            jacoco()
+            archiveArtifacts '**/target/*.jar'
+
             echo 'Cleaning workspace...'
             cleanWs()
         }
