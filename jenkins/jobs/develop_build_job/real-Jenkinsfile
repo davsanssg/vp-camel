@@ -1,10 +1,13 @@
 pipeline {
     agent any
 
+    environment{
+        JAVA_HOME = tool name: 'Java 8_152'
+    }
+
     stages {
         stage('Preparation') {
             steps {
-                echo "${JAVA_HOME}"
                 echo "${JAVA_HOME}"
             }
         }
