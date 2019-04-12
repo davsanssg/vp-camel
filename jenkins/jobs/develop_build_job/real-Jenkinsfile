@@ -2,7 +2,8 @@ pipeline {
     agent any
 
     environment{
-        JAVA_HOME = tool name: 'Java 8_152'
+        JDK = tool name: 'Java 8_152'
+        JAVA_HOME = "${JDK}"
     }
 
     stages {
@@ -30,7 +31,6 @@ pipeline {
     }
 
     post {
-
         success {
             echo 'Build succeeded'
         }
