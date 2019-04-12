@@ -1,3 +1,10 @@
+node('Startup') { 
+ stage('Set Java parameters') { 
+    JDK_PATH = tool name: 'Java 8_152'
+    env.JAVA_HOME = "${JDK_PATH}"
+ } 
+} 
+
 pipeline {
     agent any
 
@@ -11,7 +18,7 @@ pipeline {
             agent {
                 docker {
                     image 'maven:3.6.0-jdk-8-alpine'
-                    args '-v ${JDK_}:${JDK_}'
+                    args '-v ${JDK_PATH}:${JDK_PATH}'
                     reuseNode true
                 }
             }
