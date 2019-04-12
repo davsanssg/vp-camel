@@ -4,9 +4,9 @@ pipeline {
     stages {
         stage('Preparation') {
             steps {
-                echo ${env.JAVA_HOME}
+                echo "${env.JAVA_HOME}"
                 env.JAVA_HOME = tool name: 'Java 8_152'
-                echo ${env.JAVA_HOME}
+                echo "${env.JAVA_HOME}"
             }
         }
         stage('Build') {
