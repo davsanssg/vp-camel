@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment{
-        JDK = tool name: 'Java 8_152'
-        JAVA_HOME = "${JDK}"
+        JDK_ = tool name: 'Java 8_152'
+        JAVA_HOME = "${JDK_}"
     }
 
     stages {
