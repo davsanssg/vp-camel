@@ -18,7 +18,6 @@ pipeline {
             }
             steps {
                 echo 'Starting Build stage...'
-                echo 'JDK PATH "${JDK_PATH}"'
                 configFileProvider([configFile(fileId: "${CONFIG_FILE_ID}", variable: 'MAVEN_SETTINGS')]) {
                     sh 'pwd'
                     echo 'Compiling, testing and building...'
