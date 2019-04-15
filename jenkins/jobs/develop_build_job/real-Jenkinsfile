@@ -1,10 +1,13 @@
-def jdk = "testing"//tool name: 'Java 8_152'
+jdk = "testing"//tool name: 'Java 8_152'
 env.JAVA_HOME = "${jdk}"
 
 pipeline {
     agent any
 
     stages {
+        stage('Start'){
+            echo '${env.JAVA_HOME}, ${jdk}'
+        }
         stage('Build') {
             agent {
                 docker {
