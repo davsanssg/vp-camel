@@ -1,6 +1,6 @@
 node('master') { 
  stage('Set Java  parameters') { 
-    JDK_TEST = tool name: 'Java 8_152'
+    JDK_TEST = 'test'//tool name: 'Java 8_152'
  } 
 } 
 
