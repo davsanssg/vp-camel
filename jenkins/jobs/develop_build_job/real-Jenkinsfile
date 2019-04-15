@@ -34,16 +34,21 @@ pipeline {
             jacoco()
             archiveArtifacts '**/target/*.jar'
         }
+
         unsuccessful {
             echo "Build failed in Jenkins: ${JOB_NAME}#${BUILD_NUMBER}, body: See ${BUILD_URL} for details."
+            emailext attachLog: true, recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: "Build failed in Jenkins: ${JOB_NAME}#${BUILD_NUMBER}", body: "See ${BUILD_URL} for details."
         }
+
         changed {
             script {
                 if ("${currentBuild.currentResult}" == 'SUCCESS') {
                     echo "${JOB_NAME} back to stable, body: See ${BUILD_URL} for details."
+                    emailext attachLog: true, recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: "${JOB_NAME} back to stable", body: "See ${BUILD_URL} for details."
                 }
             }
         }
+
         cleanup {
             echo 'Cleaning workspace...'
             cleanWs()
