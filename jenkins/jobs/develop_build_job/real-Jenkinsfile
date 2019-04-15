@@ -11,8 +11,8 @@ pipeline {
         stage('Build') {
             agent {
                 docker {
-                    image '${MAVEN_IMAGE}'
-                    args '-v ${JDK_PATH}:${JDK_PATH}'
+                    image "${MAVEN_IMAGE}"
+                    args "-v ${JDK_PATH}:${JDK_PATH}"
                     reuseNode true
                 }
             }
@@ -36,13 +36,14 @@ pipeline {
         }
 
         unsuccessful {
-            echo "Build failed in Jenkins: ${JOB_NAME}#${BUILD_NUMBER}, body: See ${BUILD_URL} for details."
+            echo "Build unsuccessful"
             emailext attachLog: true, recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: "Build failed in Jenkins: ${JOB_NAME}#${BUILD_NUMBER}", body: "See ${BUILD_URL} for details."
         }
 
         changed {
             script {
                 if ("${currentBuild.currentResult}" == 'SUCCESS') {
+                    echo "Current build successful, previous build was unsuccessful"
                     echo "${JOB_NAME} back to stable, body: See ${BUILD_URL} for details."
                     emailext attachLog: true, recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: "${JOB_NAME} back to stable", body: "See ${BUILD_URL} for details."
                 }
