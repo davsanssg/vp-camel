@@ -18,7 +18,7 @@ pipeline {
             }
             steps {
                 echo 'Starting Build stage...'
-                configFileProvider([configFile(fileId: '${CONFIG_FILE_ID}', variable: 'MAVEN_SETTINGS')]) {
+                configFileProvider([configFile(fileId: "${CONFIG_FILE_ID}", variable: 'MAVEN_SETTINGS')]) {
                     sh 'pwd'
                     echo 'Compiling, testing and building...'
                     sh 'mvn --global-settings ${MAVEN_SETTINGS} clean install'
