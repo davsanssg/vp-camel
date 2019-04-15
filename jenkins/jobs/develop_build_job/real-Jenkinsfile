@@ -1,4 +1,4 @@
-jdk = "testing"//tool name: 'Java 8_152'
+def jdk = "testing"//tool name: 'Java 8_152'
 JAVA_HOME = "${jdk}"
 
 pipeline {
