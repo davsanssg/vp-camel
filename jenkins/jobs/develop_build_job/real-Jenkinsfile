@@ -1,11 +1,14 @@
 node('master') { 
  stage('Set Java  parameters') { 
-    JDK_PATH = 'testing'//tool name: 'Java 8_152'
+    JDK_TEST = tool name: 'Java 8_152'
  } 
 } 
 
 pipeline {
     agent any
+    environment{
+        JDK_PATH = "${JDK_TEST}"
+    }
 
     stages {
         stage('Build') {
