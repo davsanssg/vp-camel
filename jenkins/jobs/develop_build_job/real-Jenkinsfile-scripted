@@ -3,6 +3,12 @@ node {
    env.JAVA_HOME = "${jdk}"
 
    catchError {
+      stage('Preparation'){
+        echo "${jdk}"
+        echo "${env.JAVA_HOME}"
+        checkout scm
+      }
+
       stage('Build') {
         // Run the maven build inside docker container
         configFileProvider([configFile(fileId: 'byggReleaseConfig', variable: 'MAVEN_SETTINGS')]) {
