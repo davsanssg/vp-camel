@@ -6,13 +6,6 @@ pipeline {
     }
 
     stages {
-        stage('Preparation'){
-            steps{
-                echo "JAVA_HOME: ${JAVA_HOME}"
-                echo "env.JAVA_HOME: ${env.JAVA_HOME}"
-                echo "JDK_PATH: ${JDK_PATH}"
-            }
-        }
         stage('Build') {
             agent {
                 docker {
@@ -33,10 +26,6 @@ pipeline {
     }
 
     post {
-        success {
-            echo 'Build succeeded'
-        }
-
         always {
             echo 'Starting results handling...'
             junit '**/target/surefire-reports/TEST-*.xml'
@@ -45,6 +34,9 @@ pipeline {
 
             echo 'Cleaning workspace...'
             cleanWs()
+        }
+        success {
+            echo 'Build succeeded'
         }
     }
 }
