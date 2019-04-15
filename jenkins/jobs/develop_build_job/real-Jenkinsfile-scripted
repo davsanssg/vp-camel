@@ -21,9 +21,17 @@ node {
       }
    } 
    stage('Results') {
-      junit '**/target/surefire-reports/TEST-*.xml'
-      jacoco()
-      archive '**/target/*.jar'
+      //junit '**/target/surefire-reports/TEST-*.xml'
+      //jacoco()
+      //archive '**/target/*.jar'
       cleanWs()
+   }
+
+   def previousResult = currentBuild.previousBuild?.result
+   if(currentBuild.currentResult != 'SUCCESS') {
+      emailext attachLog: true, recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: "Build failed in Jenkins: ${JOB_NAME}#${BUILD_NUMBER}", body: "See ${BUILD_URL} for details."
+   }
+   else if (currentBuild.currentResult == 'SUCCESS' && previousResult && previousResult != currentBuild.currentResult) {
+      emailext attachLog: true, recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: "${JOB_NAME} back to stable", body: "See ${BUILD_URL} for details."
    }
 }
