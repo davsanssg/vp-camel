@@ -11,7 +11,7 @@ pipeline {
             agent {
                 docker {
                     image 'maven:3.6.0-jdk-8-alpine'
-                    args '-v ${JDK_PATH}:${JDK_PATH}'
+                    args '-v ${JAVA_HOME}:${JDK_PATH}'
                     reuseNode true
                 }
             }
