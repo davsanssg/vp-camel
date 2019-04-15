@@ -33,12 +33,18 @@ pipeline {
             junit '**/target/surefire-reports/TEST-*.xml'
             jacoco()
             archiveArtifacts '**/target/*.jar'
-
-            echo 'Cleaning workspace...'
-            cleanWs()
+        }
+        unsuccessful {
+            echo 'Build unsuccessful'
+            echo "Build failed in Jenkins: ${JOB_NAME}#${BUILD_NUMBER}, body: See ${BUILD_URL} for details."
         }
         success {
-            echo 'Build succeeded'
+            echo 'Build successful'
+            echo "Build succeeded in Jenkins: ${JOB_NAME}#${BUILD_NUMBER}, body: See ${BUILD_URL} for details."
+        }
+        cleanup {
+            echo 'Cleaning workspace...'
+            cleanWs()
         }
     }
 }
