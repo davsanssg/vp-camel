@@ -1,17 +1,15 @@
+def jdk = "testing"//tool name: 'Java 8_152'
+env.JAVA_HOME = "${jdk}"
 
 pipeline {
     agent any
-    environment{
-        JDK_PATH = tool name: 'Java 8_152'
-        JAVA_HOME = "${JDK_PATH}"
-    }
 
     stages {
         stage('Build') {
             agent {
                 docker {
                     image 'maven:3.6.0-jdk-8-alpine'
-                    args '-v ${JAVA_HOME}:${JDK_PATH}'
+                    args '-v ${jdk}:${jdk}'
                     reuseNode true
                 }
             }
