@@ -6,6 +6,13 @@ pipeline {
     }
 
     stages {
+
+        stage('Preparation'){
+            steps{
+                echo '$JAVA_HOME'
+                echo '$JDK_PATH'
+            }
+        }
         stage('Build') {
             agent {
                 docker {
