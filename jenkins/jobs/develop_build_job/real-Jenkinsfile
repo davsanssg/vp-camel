@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment{
         JDK_PATH = 'testing'//tool name: 'Java 8_152'
-        JAVA_HOME = "${JDK_PATH}"
+        //JAVA_HOME = "${JDK_PATH}"
     }
 
     stages {
