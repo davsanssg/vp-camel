@@ -6,7 +6,9 @@ pipeline {
 
     stages {
         stage('Start'){
-            echo '${env.JAVA_HOME}, ${jdk}'
+            steps{
+                echo '${env.JAVA_HOME}, ${jdk}'
+            }
         }
         stage('Build') {
             agent {
