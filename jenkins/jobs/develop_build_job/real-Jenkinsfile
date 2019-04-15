@@ -11,8 +11,8 @@ pipeline {
         stage('Build') {
             agent {
                 docker {
-                    image '${MAVEN_IMAGE}'
-                    args '-v ${JDK_PATH}:${JDK_PATH}'
+                    image "${MAVEN_IMAGE}"
+                    args "-v ${JDK_PATH}:${JDK_PATH}"
                     reuseNode true
                 }
             }
