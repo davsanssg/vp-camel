@@ -1,5 +1,5 @@
 jdk = "testing"//tool name: 'Java 8_152'
-env.JAVA_HOME = "${jdk}"
+JAVA_HOME = "${jdk}"
 
 pipeline {
     agent any
@@ -7,7 +7,7 @@ pipeline {
     stages {
         stage('Start'){
             steps{
-                echo '${env.JAVA_HOME}, ${jdk}'
+                echo "${JAVA_HOME}"
             }
         }
         stage('Build') {
