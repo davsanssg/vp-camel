@@ -12,7 +12,7 @@ node {
       stage('Build') {
         // Run the maven build inside docker container
         configFileProvider([configFile(fileId: 'byggReleaseConfig', variable: 'MAVEN_SETTINGS')]) {
-          def maven = docker.image("maven:3.6.0-jdk-8-alpine")
+          def maven = docker.image("maven:3.5-jdk-8")
           maven.pull()
           maven.inside("-v ${jdk}:${jdk}") {
             sh 'mvn --global-settings ${MAVEN_SETTINGS} clean install'
