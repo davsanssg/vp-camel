@@ -9,8 +9,8 @@ pipeline {
 
         stage('Preparation'){
             steps{
-                echo '${JAVA_HOME}'
-                echo '${JDK_PATH}'
+                echo "${JAVA_HOME}"
+                echo "${JDK_PATH}"
             }
         }
         stage('Build') {
