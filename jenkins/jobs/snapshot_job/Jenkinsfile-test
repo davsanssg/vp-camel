@@ -7,10 +7,7 @@ pipeline {
       BUILD_MAVEN_IMAGE = 'maven:3.6-jdk-8'
       NEXUS_MAVEN_IMAGE = 'maven:3.5-jdk-7'
   }
-  parameters {
-        string(name: 'CONFIG_FILE_ID')
-        booleanParam(name: 'DEPLOY_TO_TEST')
-    }
+  
 
   stages{
        stage('Preparation') { // for display purposes
