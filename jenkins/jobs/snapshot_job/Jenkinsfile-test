@@ -5,20 +5,19 @@ pipeline {
      // JDK_PATH = tool name: 'Java 8_131'
      // JAVA_HOME = "${JDK_PATH}"
       BUILD_MAVEN_IMAGE = 'maven:3.6-jdk-8'
-      NEXUS_MAVEN_IMAGE = 'maven:3.5-jdk-7'
+      NEXUS_MAVEN_IMAGE = 'maven:3.6-jdk-7'
       DEPLOY_SERVER = "${params.DEPLOY_TO_TEST ? 'ine-tit-app04' : 'ine-dit-app04'}"
-      //The following variables must be provided through the parameterized build configuration
-      //CONFIG_FILE_ID
   }
   
 
   stages{
-       stage('Preparation') { // for display purposes
-        // Get some code from a GitHub repository
+       stage('Preparation') {
         steps{
+          echo "Print provided parameters"
           echo "DEPLOY_TO_TEST ${params.DEPLOY_TO_TEST}"
           echo "CONFIG_FILE_ID ${params.CONFIG_FILE_ID}"
-          echo "DEPLOY_SERVER ${DEPLOY_SERVER}"
+          echo "SSH_AGENT ${params.SSH_AGENT_ID}"
+          echo "WORKSPACE ${WORKSPACE}"
         }
       }
 
@@ -33,7 +32,7 @@ pipeline {
             }
             steps {
                 echo 'Starting Build stage...'
-                configFileProvider([configFile(fileId: "${CONFIG_FILE_ID}", variable: 'MAVEN_SETTINGS')]) {
+                configFileProvider([configFile(fileId: "${params.CONFIG_FILE_ID}", variable: 'MAVEN_SETTINGS')]) {
                     echo 'Compiling, testing and building...'
                     sh 'mvn --global-settings ${MAVEN_SETTINGS} clean install'
                 }
