@@ -1,7 +1,12 @@
-node {
-jdk = tool name: 'Java 8_131'
-   env.JAVA_HOME = "${jdk}"
-   def mvnHome
+pipeline {
+  agent any
+  environment{
+      JDK_PATH = tool name: 'Java 8_131'
+      JAVA_HOME = "${JDK_PATH}"
+      CONFIG_FILE_ID = 'byggReleaseConfig'
+      BUILD_MAVEN_IMAGE = 'maven:3.6-jdk-8'
+      NEXUS_MAVEN_IMAGE = 'maven:3.5-jdk-7'
+  }
    stage('Preparation') { // for display purposes
       // Get some code from a GitHub repository
       // git 'https://github.com/skltp/vp.git'
@@ -11,10 +16,6 @@ jdk = tool name: 'Java 8_131'
           checkout([$class: 'GitSCM', branches: [[name: commitHash ]],
           userRemoteConfigs: [[url: 'https://github.com/skltp-incubator/vp-camel.git']]])
       }
-      // Get the Maven tool.
-      // ** NOTE: This 'M3' Maven tool must be configured
-      // **       in the global configuration.           
-      mvnHome = tool 'Maven 3.5.0'
    }
    stage('Build') {
       // Run the maven build
