@@ -6,6 +6,7 @@ pipeline {
      // JAVA_HOME = "${JDK_PATH}"
       BUILD_MAVEN_IMAGE = 'maven:3.6-jdk-8'
       NEXUS_MAVEN_IMAGE = 'maven:3.5-jdk-7'
+      DEPLOY_SERVER = "${params.DEPLOY_TO_TEST}" == true ? 'test' : 'production'
       //The following variables must be provided through the parameterized build configuration
       //CONFIG_FILE_ID
   }
@@ -17,6 +18,7 @@ pipeline {
         steps{
           echo "DEPLOY_TO_TEST ${params.DEPLOY_TO_TEST}"
           echo "CONFIG_FILE_ID ${params.CONFIG_FILE_ID}"
+          echo "DEPLOY_SERVER ${DEPLOY_SERVER}"
         }
       }
 
