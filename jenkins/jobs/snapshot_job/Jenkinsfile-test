@@ -1,19 +1,43 @@
 pipeline {
   agent any
+
   environment{
      // JDK_PATH = tool name: 'Java 8_131'
      // JAVA_HOME = "${JDK_PATH}"
-      CONFIG_FILE_ID = 'byggReleaseConfig'
       BUILD_MAVEN_IMAGE = 'maven:3.6-jdk-8'
       NEXUS_MAVEN_IMAGE = 'maven:3.5-jdk-7'
   }
+  parameters {
+        string(name: 'CONFIG_FILE_ID')
+        booleanParam(name: 'DEPLOY_TO_TEST')
+    }
 
   stages{
        stage('Preparation') { // for display purposes
         // Get some code from a GitHub repository
         steps{
-          echo "Hej ${DEPLOY_TO_TEST}"
+          echo "DEPLOY_TO_TEST ${params.DEPLOY_TO_TEST}"
+          echo "CONFIG_FILE_ID ${params.CONFIG_FILE_ID}"
         }
       }
+
+      /*
+      stage('Build') {
+            agent {
+                docker {
+                    image "${MAVEN_IMAGE}"
+                    args "-v ${JDK_PATH}:${JDK_PATH}"
+                    reuseNode true
+                }
+            }
+            steps {
+                echo 'Starting Build stage...'
+                configFileProvider([configFile(fileId: "${CONFIG_FILE_ID}", variable: 'MAVEN_SETTINGS')]) {
+                    echo 'Compiling, testing and building...'
+                    sh 'mvn --global-settings ${MAVEN_SETTINGS} clean install'
+                }
+            }   
+      }
+      */
   }
 }
