@@ -12,7 +12,7 @@ pipeline {
        stage('Preparation') { // for display purposes
         // Get some code from a GitHub repository
         steps{
-          echo "Hej ${deployToTestParam}"
+          echo "Hej ${DEPLOY_TO_TEST}"
         }
       }
   }
