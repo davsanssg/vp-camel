@@ -15,8 +15,8 @@ pipeline {
        stage('Preparation') { // for display purposes
         // Get some code from a GitHub repository
         steps{
-          echo "DEPLOY_TO_TEST params.DEPLOY_TO_TEST"
-          echo "CONFIG_FILE_ID ${CONFIG_FILE_ID}"
+          echo "DEPLOY_TO_TEST ${params.DEPLOY_TO_TEST}"
+          echo "CONFIG_FILE_ID ${params.CONFIG_FILE_ID}"
         }
       }
 
