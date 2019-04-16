@@ -1,0 +1,63 @@
+node {
+jdk = tool name: 'Java 8_131'
+   env.JAVA_HOME = "${jdk}"
+   def mvnHome
+   stage('Preparation') { // for display purposes
+      // Get some code from a GitHub repository
+      // git 'https://github.com/skltp/vp.git'
+      if("${commitHash}" == '') {
+          git branch: '${BRANCH}', url: 'https://github.com/skltp-incubator/vp-camel.git'
+      } else {
+          checkout([$class: 'GitSCM', branches: [[name: commitHash ]],
+          userRemoteConfigs: [[url: 'https://github.com/skltp-incubator/vp-camel.git']]])
+      }
+      // Get the Maven tool.
+      // ** NOTE: This 'M3' Maven tool must be configured
+      // **       in the global configuration.           
+      mvnHome = tool 'Maven 3.5.0'
+   }
+   stage('Build') {
+      // Run the maven build
+      configFileProvider([configFile(fileId: "CONFIG_FILE_ID", variable: 'MAVEN_SETTINGS')]) {
+        def maven = docker.image("maven:3.5-jdk-8")
+		maven.pull()
+		maven.inside("-v ${jdk}:${jdk}") {
+		  sh 'mvn --global-settings ${MAVEN_SETTINGS} clean install'
+		}
+      }
+   }
+   stage('Results') {
+      junit '**/target/surefire-reports/TEST-*.xml'
+      archive '**/target/*.jar'
+   }
+   stage('nexus') {
+      //Ladda upp på nexus
+	  configFileProvider([configFile(fileId: "CONFIG_FILE_ID", variable: 'MAVEN_SETTINGS')]) {
+		def maven = docker.image("maven:3.5-jdk-7")
+		maven.pull()
+		maven.inside("-v ${jdk}:${jdk} -e GRAILS_MAVEN_LOCAL=/var/lib/jenkins/workspace/SKLTP/TAK_Snapshot_Pipeline/?/.m2/repository/") {
+		sh 'mvn --global-settings ${MAVEN_SETTINGS} -Pskltp -DskipTests=true deploy'
+		}
+      }
+   }
+   stage('Deploy') {
+     if(params.deployToTest) {
+		sshagent(['SSH_AGENT']) {
+			def pom = readMavenPom file: 'pom.xml'
+			def pomversion = pom.version
+			echo pomversion
+			sh 'scp vp-services-camel/target/*.jar ine-ntjp-build@DEPLOY_SERVER:/www/inera/home/ine-ntjp-build'
+			sh "ssh -l ine-ntjp-build DEPLOY_SERVER 'hostname; ls; sudo mv vp-services-camel*.jar /www/inera/releases/vp-camel; sudo sh /www/inera/releases/vp-camel/deploy-vp.sh ${pomversion}'"
+		}
+	 }
+	 else {
+		  sshagent(['SSH_AGENT']) {
+			def pom = readMavenPom file: 'pom.xml'
+			def pomversion = pom.version
+			echo pomversion
+			sh 'scp vp-services-camel/target/*.jar ine-ntjp-build@DEPLOY_SERVER:/www/inera/home/ine-ntjp-build'
+			sh "ssh -l ine-ntjp-build DEPLOY_SERVER 'hostname; ls; sudo mv vp-services-camel*.jar /www/inera/releases/vp-camel; sudo sh /www/inera/releases/vp-camel/deploy-vp.sh ${pomversion}'"
+		}
+	 }
+   }
+}
