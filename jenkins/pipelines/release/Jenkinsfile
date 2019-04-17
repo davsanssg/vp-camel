@@ -21,8 +21,8 @@ pipeline {
     }
     stage('Preparation'){
       steps{
-        sh 'git config user.name ${params.GIT_USER_NAME}'
-        sh 'git config user.email ${params.GIT_USER_EMAIL}'
+        sh "git config user.name ${params.GIT_USER_NAME}"
+        sh "git config user.email ${params.GIT_USER_EMAIL}"
         echo 'getReleaseVersion: ' + getReleaseVersion(false)
       }
     }    
