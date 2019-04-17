@@ -4,15 +4,14 @@ pipeline {
   environment{
       JDK_PATH = tool name: 'Java 8_131'
       JAVA_HOME = "${JDK_PATH}"
-      MAVEN_IMAGE = 'maven:3.6-jdk-8'
+      MAVEN_DOCKER_IMAGE = 'maven:3.6-jdk-8'
   }
-  
 
   stages{    
     stage('Build') {
       agent {
         docker {
-          image "${MAVEN_IMAGE}"
+          image "${MAVEN_DOCKER_IMAGE}"
           args "-v ${JDK_PATH}:${JDK_PATH}"
           reuseNode true
         }
@@ -34,7 +33,7 @@ pipeline {
     stage('Nexus') {
       agent {
         docker {
-          image "${MAVEN_IMAGE}"
+          image "${MAVEN_DOCKER_IMAGE}"
           args "-v ${JDK_PATH}:${JDK_PATH}"
           reuseNode true
         }
