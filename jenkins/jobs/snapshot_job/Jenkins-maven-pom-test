@@ -19,9 +19,8 @@ pipeline {
 
     stage('Deploy') {
       environment{
-        MAVEN_POM_VERSION = readMavenPom().getVersion()
-        POM_2 = readMavenPom file: 'pom.xml'
-        MAVEN_POM_V2 = "${POM_2}.version"
+        MAVEN_POM_VERSION = readMavenPom()
+        MAVEN_POM_V2 = readMavenPom file: 'pom.xml'
       }
       steps{
         echo "${MAVEN_POM_VERSION}"
