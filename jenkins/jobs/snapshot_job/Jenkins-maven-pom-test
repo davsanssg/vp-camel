@@ -16,26 +16,10 @@ pipeline {
         echo "SSH_AGENT ${params.SSH_AGENT_ID}"
       }
     }
-     
-    stage('Build') {
-      agent {
-        docker {
-          image "${MAVEN_IMAGE}"
-          reuseNode true
-        }
-      }
-      steps {
-        echo 'Starting Build stage...'
-        configFileProvider([configFile(fileId: "${params.CONFIG_FILE_ID}", variable: 'MAVEN_SETTINGS')]) {
-          echo 'Compiling, testing and building...'
-          sh 'mvn --global-settings ${MAVEN_SETTINGS} clean install'
-        }
-      }   
-    }
 
     stage('Deploy') {
       environment{
-        MAVEN_POM_VERSION = readMavenPom('pom.xml').getVersion()
+        MAVEN_POM_VERSION = "${readMavenPom('pom.xml').getVersion()}"
       }
       steps{
         echo "${MAVEN_POM_VERSION}"
