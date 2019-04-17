@@ -19,7 +19,7 @@ pipeline {
 
     stage('Deploy') {
       environment{
-        MAVEN_POM_VERSION = "${readMavenPom('pom.xml').getVersion()}"
+        MAVEN_POM_VERSION = readMavenPom().getVersion()
       }
       steps{
         echo "${MAVEN_POM_VERSION}"
