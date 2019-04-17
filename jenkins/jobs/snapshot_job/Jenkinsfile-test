@@ -9,16 +9,7 @@ pipeline {
   }
   
 
-  stages{
-    stage('Preparation') {
-      steps{
-        echo "Print provided parameters"
-        echo "DEPLOY_TO_TEST ${params.DEPLOY_TO_TEST}"
-        echo "CONFIG_FILE_ID ${params.CONFIG_FILE_ID}"
-        echo "SSH_AGENT ${params.SSH_AGENT_ID}"
-      }
-    }
-     
+  stages{    
     stage('Build') {
       agent {
         docker {
@@ -29,6 +20,7 @@ pipeline {
       }
       steps {
         configFileProvider([configFile(fileId: "${params.CONFIG_FILE_ID}", variable: 'MAVEN_SETTINGS')]) {
+          sh 'printenv'
           sh 'mvn --global-settings ${MAVEN_SETTINGS} clean install'
         }
       }   
@@ -51,6 +43,7 @@ pipeline {
       }
       steps {
         configFileProvider([configFile(fileId: "${params.CONFIG_FILE_ID}", variable: 'MAVEN_SETTINGS')]) {
+          sh 'printenv'
           sh 'mvn --global-settings ${MAVEN_SETTINGS} -Pskltp -DskipTests=true deploy'
         }
       }
@@ -61,7 +54,7 @@ pipeline {
         MAVEN_POM_VERSION = readMavenPom().getVersion()
       }
       steps{
-        sshagent(["${params.SSH_AGENT_ID}"]) {
+        sshagent(["${params.SSH_CREDENTIALS_ID}"]) {
           echo "MAVEN_POM_VERSION: ${MAVEN_POM_VERSION}"
           sh "scp vp-services-camel/target/*.jar ine-ntjp-build@${DEPLOY_SERVER}:/www/inera/home/ine-ntjp-build"
           sh "ssh -l ine-ntjp-build ${DEPLOY_SERVER} 'hostname; ls; sudo mv vp-services-camel*.jar /www/inera/releases/vp-camel; sudo sh /www/inera/releases/vp-camel/deploy-vp.sh ${MAVEN_POM_VERSION}'"
