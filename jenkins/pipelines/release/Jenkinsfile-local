@@ -1,3 +1,9 @@
+node{
+  stage('Clean workspace'){
+    cleanWs()
+  }
+}
+
 pipeline  {
     agent any
 
