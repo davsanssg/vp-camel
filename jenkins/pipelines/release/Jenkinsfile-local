@@ -2,8 +2,6 @@ pipeline  {
     agent any
 
     environment {
-        JDK_PATH = tool name: 'Java 8_152'
-        JAVA_HOME = "${JDK_PATH}"
         MAVEN_DOCKER_IMAGE = 'maven:3.6-jdk-8'
     }
 
@@ -30,7 +28,6 @@ pipeline  {
             agent {
                 docker {
                     image "${MAVEN_DOCKER_IMAGE}"
-                    args "-v ${JDK_PATH}:${JDK_PATH}"
                     reuseNode true
                 }
             }
@@ -52,13 +49,12 @@ pipeline  {
             agent {
                 docker {
                     image "${MAVEN_DOCKER_IMAGE}"
-                    args "-v ${JDK_PATH}:${JDK_PATH}"
                     reuseNode true
                 }
             }      
             steps {
                 configFileProvider([configFile(fileId: "${params.CONFIG_FILE_ID}", variable: 'MAVEN_SETTINGS')]) {
-                    sh 'mvn -B --global-settings ${MAVEN_SETTINGS} -DdevelopmentVersion=${params.DEVELOPMENT_VERSION} -DreleaseVersion=${params.RELEASE_VERSION} -Dresume=false -DskipTests -Darguments=-DskipTests -Pskltp -DdryRun=${params.DRY_RUN} release:prepare -DpushChanges=true release:perform'
+                    sh 'mvn -B --global-settings ${MAVEN_SETTINGS} -DdevelopmentVersion=${params.DEVELOPMENT_VERSION} -DreleaseVersion=${params.RELEASE_VERSION} -Dresume=false -DskipTests -Darguments=-DskipTests -Pskltp -DdryRun=${params.DRY_RUN} release:prepare -DpushChanges=true release:perform -Darguments=-Dmaven.deploy.skip=true'
                 }
             }
         }
