@@ -17,12 +17,14 @@
   <description>SKLTP VP Services byggt med Camel och Spring Boot</description>
 
   <properties>
+    <java.version>1.8</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <spring.boot-version>${spring-boot-version}</spring.boot-version>
+    <spring.boot-version>2.1.0.RELEASE</spring.boot-version>
     <lmax_disruptor-version>3.3.6</lmax_disruptor-version>
-    <commons.lang-version>${commons-lang-version}</commons.lang-version>
+    <commons.lang-version>2.6</commons.lang-version>
     <camel.version>2.23.1</camel.version>
+    <javax.servlet-api-version>4.0.1</javax.servlet-api-version>
   </properties>
 
   <distributionManagement>
@@ -192,9 +194,18 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
+        </configuration>
+      </plugin>
+
+      <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
-        <version>${spring-boot-version}</version>
+        <version>${spring.boot-version}</version>
         <executions>
           <execution>
             <goals>
