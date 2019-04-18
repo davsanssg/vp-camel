@@ -39,9 +39,9 @@
   </distributionManagement>
 
   <scm>
-    <url>https://github.com/skltp-incubator/vp-camel.git</url>
-    <connection>scm:git:https://github.com:443/skltp-incubator/vp-camel.git</connection>
-    <developerConnection>scm:git:https://github.com:443/skltp-incubator/vp-camel.git</developerConnection>
+    <url>https://github.com/davsanssg/vp-camel.git</url>
+    <connection>scm:git:https://github.com:443/davsanssg/vp-camel.git</connection>
+    <developerConnection>scm:git:https://github.com:443/davsanssg/vp-camel.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
 
