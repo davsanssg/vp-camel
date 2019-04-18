@@ -5,18 +5,7 @@ pipeline  {
         MAVEN_DOCKER_IMAGE = 'maven:3.6-jdk-8'
     }
 
-    stages  {
-        stage('Print params') {
-            steps {
-                echo "DEVELOPMENT_VERSION ${params.DEVELOPMENT_VERSION}"
-                echo "RELEASE_VERSION ${params.RELEASE_VERSION}"
-                echo "DRY_RUN ${params.DRY_RUN}"
-                echo "CONFIG_FILE_ID ${params.CONFIG_FILE_ID}"
-                echo "GIT_USER_NAME ${params.GIT_USER_NAME}"
-                echo "GIT_USER_EMAIL ${params.GIT_USER_EMAIL}"
-            }
-      }
-
+    stages  {   
         stage('Preparation')  {
             steps {
                 sh "git config user.name ${params.GIT_USER_NAME}"
