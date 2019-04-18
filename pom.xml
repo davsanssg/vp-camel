@@ -12,7 +12,7 @@
   <groupId>se.skltp.vp</groupId>
   <artifactId>vp-parent-camel</artifactId>
   <name>vp-parent-camel</name>
-  <version>125.rel-SNAPSHOT</version>
+  <version>5.0.0</version>
   <packaging>pom</packaging>
   <description>SKLTP VP Services byggt med Camel och Spring Boot</description>
 
@@ -44,7 +44,7 @@
     <url>https://github.com/davsanssg/vp-camel.git</url>
     <connection>scm:git:https://github.com/davsanssg/vp-camel.git</connection>
     <developerConnection>scm:git:https://github.com/davsanssg/vp-camel.git</developerConnection>
-    <tag>HEAD</tag>
+    <tag>vp-parent-camel-5.0.0</tag>
   </scm>
 
   <modules>
