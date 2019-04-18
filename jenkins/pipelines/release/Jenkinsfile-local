@@ -1,9 +1,3 @@
-node{
-  stage('Clean workspace'){
-    cleanWs()
-  }
-}
-
 pipeline  {
     agent any
 
@@ -67,7 +61,7 @@ pipeline  {
     }
 
     post  {
-        always  {
+        cleanup  {
             cleanWs()
         }
     }
