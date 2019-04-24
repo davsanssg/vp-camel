@@ -1,40 +1,55 @@
 pipeline {
     agent any
-
-    stages {       
-        stage('Build') {
-            environment {
-                JOB_PATH = 'jenkins/jobs/develop_build_job/'
-                MAVEN_SETTINGS = 'mvn-settings.xml'
-            }    
-
-            agent {
-                docker {
-                    image 'maven:3.6.0-jdk-8-alpine'
-                    reuseNode true
-                }
-            }    
-            steps{
-                sh 'pwd'
-                echo 'Starting Build stage...'
-                echo 'Compiling, testing and building...'
-                sh 'mvn --settings ${JOB_PATH}${MAVEN_SETTINGS} clean install'
-            }     
-
-        }
-        
-        stage('Results'){
-            steps{
-                echo 'Starting Results stage...'
-                junit '**/target/surefire-reports/TEST-*.xml'
-                archiveArtifacts '**/target/*.jar'    
-            }
-        }
-        
+    environment{
+        JDK_PATH = tool name: 'Java 8_152'
+        JAVA_HOME = "${JDK_PATH}"
+        CONFIG_FILE_ID = 'byggReleaseConfig'
+        MAVEN_IMAGE = 'maven:3.6-jdk-8'
     }
 
-    post { 
+    stages {
+        stage('Build') {
+            agent {
+                docker {
+                    image "${MAVEN_IMAGE}"
+                    args "-v ${JDK_PATH}:${JDK_PATH}"
+                    reuseNode true
+                }
+            }
+            steps {
+                echo 'Starting Build stage...'
+                configFileProvider([configFile(fileId: "${CONFIG_FILE_ID}", variable: 'MAVEN_SETTINGS')]) {
+                    sh 'pwd'
+                    echo 'Compiling, testing and building...'
+                    sh 'mvn --global-settings ${MAVEN_SETTINGS} clean install'
+                }
+            }     
+        }        
+    }
+
+    post {
         always {
+            echo 'Starting results handling...'
+            junit '**/target/surefire-reports/TEST-*.xml'
+            jacoco()
+            archiveArtifacts '**/target/*.jar'
+        }
+
+        unsuccessful {
+            echo 'Build unsuccessful'
+            emailext attachLog: true, recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: "Build failed in Jenkins: ${JOB_NAME}#${BUILD_NUMBER}", body: "See ${BUILD_URL} for details."
+        }
+
+        changed {
+            script {
+                if ("${currentBuild.currentResult}" == 'SUCCESS') {
+                    echo "Current build successful, previous build was unsuccessful"
+                    emailext attachLog: true, recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: "${JOB_NAME} back to stable", body: "See ${BUILD_URL} for details."
+                }
+            }
+        }
+
+        cleanup {
             echo 'Cleaning workspace...'
             cleanWs()
         }
